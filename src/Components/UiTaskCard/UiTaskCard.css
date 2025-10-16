@@ -1,0 +1,11 @@
+.UiTaskCardActive{
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 10px;
+}
+.UiTaskCardInActive{
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 10px;
+  text-decoration-line: line-through;
+}
