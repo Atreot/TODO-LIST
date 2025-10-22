@@ -1,0 +1,43 @@
+#listContainer {
+    height: 100%;
+}
+
+#listContainerChild {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 30px;
+    box-sizing: border-box;
+    resize: none;
+    flex-shrink: 0;
+}
+
+.parentCenterList {
+    padding-top: 0px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ButtonAddTask {
+    position: absolute;
+    top: 493px; 
+    left:692px;
+    /* bottom: 57px;
+    right: 40px; */
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    box-shadow: 0px 0px 4px 0 #6C63FF;
+    
+}
+.container1{
+    height: 135px;
+    display: flex;
+    align-content: space-around;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}

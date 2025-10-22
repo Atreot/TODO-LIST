@@ -1,19 +1,24 @@
-import { useState } from 'react'
-
 import './App.css'
-import UiTaskCard from './Components/UiTaskCard/UiTaskCard'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { ToDoList } from './Components/ToDoList/ToDoList';
+import { UiTaskCardDetail } from './Components/UiTaskCardDetail/UiTaskCardDetail';
+import { useAppSelector } from './store/hook';
+import { createDefaulTask } from './utils';
+import { UiTaskCardBilder } from './Components/UiTaskCardBilder/UiTaskCardBilder';
+
+// npm run dev
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const isEdit = useAppSelector(state=>state.tasksSlice.isEdit)
   return (
-    <>
-
-      <h1>ToDoList</h1>
-      <div className="card">
-        <UiTaskCard id={0} title={'1 Task'} description={' Hello,  Hello,  Hello,  Hello,  Hello,  Hello,  Hello, '} isCompleted={false}  />
-      </div>
-      
+    < >
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ToDoList />} />
+        <Route path="/:id" element={<UiTaskCardDetail />} />
+      </Routes>
+    </BrowserRouter>
+    {isEdit && <UiTaskCardBilder/>}
     </>
   )
 }

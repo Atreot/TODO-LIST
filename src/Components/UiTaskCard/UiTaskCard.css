@@ -1,11 +1,110 @@
-.UiTaskCardActive{
-  border: 1px solid black;
-  border-radius: 8px;
-  padding: 10px;
+.UiTaskCard {
+  position: relative;
+  border-bottom: 1px solid #6C63FF;
+  padding-bottom: 17px;
+  padding-top: 17px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  font-size: 20px;
+  width: 520px;
 }
-.UiTaskCardInActive{
-  border: 1px solid black;
-  border-radius: 8px;
-  padding: 10px;
+.UiTaskCard:last-child {
+  border-bottom:0;
+}
+.UiTaskCard:first-child {
+  padding-top:0px;
+}
+
+
+.InActive {
   text-decoration-line: line-through;
 }
+
+
+
+.UiTaskCardStatus {
+  position: static;
+  background: #00ff0036;
+  border-radius: 8px;
+}
+
+.TaskCardTitle {
+  text-transform: uppercase;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  overflow: hidden;
+  height: 30px;
+}
+
+.TaskCardDate {
+  text-transform: uppercase;
+  margin: 0;
+  text-align: left;
+  padding-right: 5px;
+  height: 30px;
+}
+
+.TaskCardButton {
+  top: 10px;
+  left: 10px;
+  border: 0px solid transparent;
+  font-family: inherit;
+  background-color: #6C63FF;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 100%;
+  text-transform: uppercase;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 19px;
+  min-width: 19px;
+  text-align: left;
+  background: none;
+  visibility: hidden;
+}
+
+.UiTaskCard:hover .TaskCardButton {
+  visibility: visible;
+}
+
+.Hiden {
+  display: none;
+}
+
+.Visible {
+  visibility: visible;
+}
+
+.dateOfCreation {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  padding: 1px;
+}
+
+.dateOfCompletion {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  padding: 1px;
+}
+
+
+
+/* input[type="checkbox"] {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  all: unset;
+} */

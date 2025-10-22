@@ -1,0 +1,96 @@
+.RootContainer {
+    width: 750px;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+
+}
+
+.Container {
+    width: 750px;
+    height: 400px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.Description {
+
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    word-break: break-all;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+}
+
+.Footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 15px;
+    margin-right: 15px;
+
+
+}
+
+.DateContainer {
+    margin-bottom: 97px;
+}
+
+.Date {
+    position: static;
+    color: #8C8C8C;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: lowercase;
+}
+
+.Tools {
+    width: 100%;
+    border-bottom: 0;
+    gap: 10px;
+
+}
+
+/* .Tools:first-child{
+     margin-left: 15px;
+} */
+
+.MarginLeft {
+    margin-left: 15px;
+}
+
+.MarginRight {
+    margin-right: 15px;
+}
+
+
+.TitleDiv {
+    height: 60px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+h2 {
+    margin: 0px;
+    font-size: 20px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-transform: uppercase;
+}

@@ -1,50 +1,71 @@
-import React, { FC, useState } from 'react';
+import { useState, type FC } from 'react'
 import "./UiTaskCard.css"
+import type { ITask } from '../../types/TypesToDoList';
+import { useNavigate } from 'react-router';
+import { useAppDispatch } from '../../store/hook';
+import { deleteTaskById, setEdit, updateTaskStatus } from '../../store/slices/tasksSlice';
+import { BinIcon, PencilIcon } from '../../assets/icons/icons';
 
-// Определение типов для пропсов
-interface UiTaskCardProps {
-  id: number;
-  title: string;
-  description: string;
-  isCompleted: boolean;
+interface IUiTaskCardProps {
+  task: ITask;
 }
 
-const UiTaskCard: FC<UiTaskCardProps> = ({id,title,description = '',isCompleted = false}) => {
-  
-  const [TaskCard, setTaskCard] = useState<UiTaskCardProps>({
-  id: id,
-  title: title,
-  description: description,
-  isCompleted: isCompleted,
+const UiTaskCard: FC<IUiTaskCardProps> = ({ task }) => {
 
-  });
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch()
 
-  function OnClickCompleted(){
-    setTaskCard(prev => ({ ...prev,isCompleted:true }));
+  function OnClickCompleted() {
+    dispatch(updateTaskStatus({
+      id: task.id,
+      newStatusIsCompleted: true
+    }))
     console.log("OnClickCompleted");
-    
   }
-  function OnClickDelete(){
-    
+  function OnClickDeComplet() {
+    dispatch(updateTaskStatus({
+      id: task.id,
+      newStatusIsCompleted: false
+    }))
+    console.log("OnClickCompleted");
+  }
+  function OnClickDelete() {
+    dispatch(deleteTaskById(task.id));
+  }
+
+  function openViewTaskCard() {
+     navigate(`/${task.id}`);
   }
 
   return (
-    <div  className={`UiTaskCard${TaskCard.isCompleted ? 'InActive' : 'Active'}`}>
-      <h2>{TaskCard.title}</h2>
-      <p>Description: {TaskCard.description}</p>
-      <p>Status: {TaskCard.isCompleted ? 'Completed' : 'In progress'}</p>
-      <button onClick={OnClickCompleted}
-        style={{ display: TaskCard.isCompleted ? 'none' : 'block'  }}>✔</button>
-      <button onClick={OnClickDelete}
-        style={{ display: TaskCard.isCompleted ?  'block' :  'none'  }}>❌</button>
+    <div  className={`UiTaskCard  parentCenter`}>
+      <input
+        type="checkbox"
+        id={task.id}
+        className="checkbox-input"
+        checked={task.isCompleted}
+        onChange={task.isCompleted ? OnClickDeComplet : OnClickCompleted}
+        onClick={(e) => { e.stopPropagation(); }}
+      />
+      <p className={`TaskCardTitle  ${task.isCompleted ? 'InActive' : 'Active'}`} onClick={openViewTaskCard}> {task.title}</p>
+      
+      <span  className={`TaskCardButton ${task.isCompleted ? 'Hiden' : ''}`}  onClick={()=>{dispatch(setEdit(task.id))}}
+      ><PencilIcon /></span>
+      <span className={`TaskCardButton ${task.isCompleted ? 'Hiden' : ''}`}  onClick={OnClickDelete}
+      ><BinIcon /></span>
+      <div className={`TaskCardDate ${task.isCompleted ? '' : 'Hiden'}  Visible`}
+      ><ShowDate date={task.dateOfCompletion} /></div>
     </div>
   );
 };
 
-// UiTaskCard.defaultProps = {
-//   title: "string",
-//   description: "string",
-//   isCompleted: "boolean",
-// };
+const ShowDate: FC<{ date: number | undefined }> = ({ date }) => {
+    if (date) {
+      const dateStr = new Date(date).toLocaleDateString('ru-RU');
+      //const timeStr = new Date(date).toLocaleTimeString('ru-RU');//<br></br> {timeStr}</></>
+      return (<>{dateStr} </>)
+    }
+    return ''
+  }
 
-export default UiTaskCard;
+export { UiTaskCard, ShowDate};
