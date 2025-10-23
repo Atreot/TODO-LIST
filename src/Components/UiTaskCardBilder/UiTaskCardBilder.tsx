@@ -5,19 +5,19 @@ import type { ITask } from '../../types/TypesToDoList';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { addTask, changeTask, removeEdit } from '../../store/slices/tasksSlice';
 import { v4 as uuidv4 } from 'uuid';
+import { Button, Dialog, Portal } from "@chakra-ui/react"
+import { createOverlay } from "@chakra-ui/react"
+
+//Overlay Manager npx @chakra-ui/cli snippet add toaster
 
 
-// Определение типов для пропсов
 interface IUiTaskCardBilderProps {
-  // task: ITask,
-  // isChangeMode?: boolean,
-  // onClose: () => void,
+
 }
 
 const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
   const taskId = useAppSelector(state => state.tasksSlice.isEdit);
   const tasks = useAppSelector(state => state.tasksSlice.tasks);
-
 
   let task: ITask;
 
@@ -30,7 +30,6 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   
-
   useEffect(() => {
     if (tasks && taskId !== null && tasks[taskId]) {
       task = tasks[taskId];

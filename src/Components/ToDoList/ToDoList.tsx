@@ -8,7 +8,6 @@ import SearchInput from '../SearchInput/SearchInput';
 import './ToDoList.css';
 import { DetectiveIcon, PlusIcon } from '../../assets/icons/icons';
 
-
 const ToDoList: FC = () => {
   let tasks = useAppSelector((state) => state.tasksSlice.tasks);
   const dispatch = useAppDispatch();
@@ -27,8 +26,8 @@ const ToDoList: FC = () => {
 
     const isLightAppTemeStr = localStorage.getItem('isLightAppTeme');
     console.log(isLightAppTemeStr);
-    const storedIsLightAppTeme: boolean = isLightAppTemeStr === null ? true :  JSON.parse(isLightAppTemeStr);
-    if(storedIsLightAppTeme) dispatch(setLightTheme()); else dispatch(setDarkTheme());
+    const storedIsLightAppTeme: boolean = isLightAppTemeStr === null ? true : JSON.parse(isLightAppTemeStr);
+    if (storedIsLightAppTeme) dispatch(setLightTheme()); else dispatch(setDarkTheme());
   }, []);
 
   useEffect(() => {
@@ -47,6 +46,7 @@ const ToDoList: FC = () => {
 
   function onChangeSelect(value: string) {
     setSelectValue(value);
+    
   }
 
   function updateFilteredTasks() {
@@ -110,16 +110,15 @@ const ToDoList: FC = () => {
       <div className='container1'>
         <h1>TODO LIST</h1>
         <div className="parentCenter" >
-          <SearchInput onChangeInput={onChangeSearch} onChangeSelect={onChangeSelect} onClickAll={()=>{setSearchValue("");}} />
+          <SearchInput onChangeInput={onChangeSearch} onChangeSelect={onChangeSelect} onClickAll={() => { setSearchValue(""); }} />
         </div>
       </div>
       <div className="parentCenterList" id='listContainer'>
-        <button className="ButtonAddTask" onClick={() => { dispatch(setEdit(" ")); }}><PlusIcon/></button>
+        <button className="ButtonAddTask" onClick={() => { dispatch(setEdit(" ")); }}><PlusIcon /></button>
         <div className="childCenter" id='listContainerChild'>
           <DisplayTasks />
         </div>
       </div>
-
     </>
   )
 };

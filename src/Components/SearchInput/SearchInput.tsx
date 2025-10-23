@@ -22,6 +22,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <div className="search-container">
+      
       <div className="search-wrapper">
         <input
           type="text"
@@ -40,7 +41,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
       <button onClick={() => { onClickAll && onClickAll(); setValue(""); }}>ВСЕ</button>
       {isLightAppTeme ? <button onClick={() => { dispatch(setDarkTheme()); localStorage.setItem('isLightAppTeme', JSON.stringify(false)); }} className='ThemeButton' ><DarkThemeIcon /></button> :
         <button onClick={() => { dispatch(setLightTheme()); localStorage.setItem('isLightAppTeme', JSON.stringify(true)); }} className='ThemeButton' ><LightThemeIcon /></button>}
-
+ 
     </div>
   );
 };

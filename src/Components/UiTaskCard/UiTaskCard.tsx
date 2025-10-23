@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react'
+import { type FC } from 'react'
 import "./UiTaskCard.css"
 import type { ITask } from '../../types/TypesToDoList';
 import { useNavigate } from 'react-router';
@@ -20,14 +20,12 @@ const UiTaskCard: FC<IUiTaskCardProps> = ({ task }) => {
       id: task.id,
       newStatusIsCompleted: true
     }))
-    console.log("OnClickCompleted");
   }
   function OnClickDeComplet() {
     dispatch(updateTaskStatus({
       id: task.id,
       newStatusIsCompleted: false
     }))
-    console.log("OnClickCompleted");
   }
   function OnClickDelete() {
     dispatch(deleteTaskById(task.id));
