@@ -1,9 +1,7 @@
 import { type PayloadAction } from "@reduxjs/toolkit";
 import type { Middleware } from 'redux';
 import type { RootState } from "../store";
-import { toaster } from "../../components/ui/toaster";
-import { useAppDispatch } from "../hook";
-import { setTasks } from "../slices/tasksSlice";
+import { setNotification, setTasks } from "../slices/tasksSlice";
 
 
 function isActionWithType(action: unknown): action is { type: string } {
@@ -37,11 +35,10 @@ export const notificationsMiddleware: Middleware = ({ getState, dispatch }) => (
                     const currentState: RootState = getState();
                     if (currentState.tasksSlice.tasks === null || !(currentState.tasksSlice.tasks[payload.id])) return;
 
-                    toaster.create({
-                        title: currentState.tasksSlice.tasks[payload.id].isCompleted ? `${taskTitle} ВЫПОЛНЕНА`.toLocaleUpperCase() :
+                    dispatch(setNotification({message: currentState.tasksSlice.tasks[payload.id].isCompleted ? `${taskTitle} ВЫПОЛНЕНА`.toLocaleUpperCase() :
                             `ВЫПОЛНЕНИЕ ${taskTitle} ОТМЕНЕНО`.toLocaleUpperCase(),
-                        duration: 2000,
-                    })
+                        autoHideDuration: 2000,}));
+
                 }
                 break;
             case 'deleteTaskById': {
@@ -56,22 +53,15 @@ export const notificationsMiddleware: Middleware = ({ getState, dispatch }) => (
 
                 function onClickUndo() {
                     dispatch(setTasks(savedTasks));
-                    toaster.success({
-                        title: "Удаление отменено".toLocaleUpperCase(),
-                        duration: 2000,
-                    })
+                    
+                    dispatch(setNotification({message: "Удаление отменено".toLocaleUpperCase(),
+                        autoHideDuration: 2000,}));
                 }
 
-                toaster.dismiss();
-                toaster.create({
-                    title: `удалена ${taskTitle}`.toLocaleUpperCase(),
-                    duration: 5000,
-                    action: {
-                        label: "ОТМЕНА",
-                        onClick: () => onClickUndo(),
-                    },
-                })
                 result = next(action);
+
+                dispatch(setNotification({message: `удалена ${taskTitle}`.toLocaleUpperCase(),
+                        autoHideDuration: 5000, action: onClickUndo}));
             }
                 break;
             default:

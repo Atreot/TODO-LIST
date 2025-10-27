@@ -7,6 +7,7 @@ import { deleteTaskById, setEdit, updateTaskStatus } from "../../store/slices/ta
 import "../../Components/UiTaskCard/UiTaskCard.scss"
 import "./UiTaskCardDetail.scss"
 import Button from "@mui/material/Button";
+import { deleteTask, putTaskStatus } from "../../utils";
 
 interface IUiTaskCardDetailProps {
 
@@ -22,23 +23,31 @@ const UiTaskCardDetail: FC<IUiTaskCardDetailProps> = () => {
     const task = (tasks && id) ? tasks[id] : null
 
     function OnClickDelete() {
+        if (!task) return;
+
         navigate(`/tasks`);
-        task && dispatch(deleteTaskById(task.id));
+        dispatch(deleteTaskById(task.id));
+        deleteTask(task.id);
     }
 
     function OnClickCompleted() {
-        task && dispatch(updateTaskStatus({
+        if (!task) return;
+        dispatch(updateTaskStatus({
             id: task.id,
             newStatusIsCompleted: true
         }))
+        putTaskStatus(true, task.id);
+
     }
 
     function OnClickDeComplet() {
-        task && dispatch(updateTaskStatus({
+        if (!task) return;
+        dispatch(updateTaskStatus({
             id: task.id,
             newStatusIsCompleted: false
         }))
-        console.log("OnClickCompleted");
+
+        putTaskStatus(false, task.id);
     }
 
     return (

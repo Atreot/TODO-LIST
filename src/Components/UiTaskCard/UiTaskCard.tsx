@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router';
 import { useAppDispatch } from '../../store/hook';
 import { deleteTaskById, setEdit, updateTaskStatus } from '../../store/slices/tasksSlice';
 import { BinIcon, PencilIcon } from '../../assets/icons/icons';
+import { BASE_URL } from '../../const';
+import { deleteTask, putTaskStatus } from '../../utils';
 
 interface IUiTaskCardProps {
   task: ITask;
@@ -20,23 +22,28 @@ const UiTaskCard: FC<IUiTaskCardProps> = ({ task }) => {
       id: task.id,
       newStatusIsCompleted: true
     }))
+    putTaskStatus(true, task.id);
   }
+
   function OnClickDeComplet() {
     dispatch(updateTaskStatus({
       id: task.id,
       newStatusIsCompleted: false
     }))
+    putTaskStatus(false, task.id);
   }
+
   function OnClickDelete() {
     dispatch(deleteTaskById(task.id));
+    deleteTask(task.id);
   }
 
   function openViewTaskCard() {
-     navigate(`/tasks/${task.id}`);
+    navigate(`/tasks/${task.id}`);
   }
 
   return (
-    <div  className={`UiTaskCard  parentCenter`}>
+    <div className={`UiTaskCard  parentCenter`}>
       <input
         type="checkbox"
         id={task.id}
@@ -46,10 +53,10 @@ const UiTaskCard: FC<IUiTaskCardProps> = ({ task }) => {
         onClick={(e) => { e.stopPropagation(); }}
       />
       <p className={`TaskCardTitle  ${task.isCompleted ? 'InActive' : 'Active'}`} onClick={openViewTaskCard}> {task.title}</p>
-      
-      <span  className={`TaskCardButton ${task.isCompleted ? 'Hiden' : ''}`}  onClick={()=>{dispatch(setEdit(task.id))}}
+
+      <span className={`TaskCardButton ${task.isCompleted ? 'Hiden' : ''}`} onClick={() => { dispatch(setEdit(task.id)) }}
       ><PencilIcon /></span>
-      <span className={`TaskCardButton ${task.isCompleted ? 'Hiden' : ''}`}  onClick={OnClickDelete}
+      <span className={`TaskCardButton ${task.isCompleted ? 'Hiden' : ''}`} onClick={OnClickDelete}
       ><BinIcon /></span>
       <div className={`TaskCardDate ${task.isCompleted ? '' : 'Hiden'}  Visible`}
       ><ShowDate date={task.dateOfCompletion} /></div>
@@ -58,12 +65,12 @@ const UiTaskCard: FC<IUiTaskCardProps> = ({ task }) => {
 };
 
 const ShowDate: FC<{ date: number | undefined }> = ({ date }) => {
-    if (date) {
-      const dateStr = new Date(date).toLocaleDateString('ru-RU');
-      //const timeStr = new Date(date).toLocaleTimeString('ru-RU');//<br></br> {timeStr}</></>
-      return (<>{dateStr} </>)
-    }
-    return ''
+  if (date) {
+    const dateStr = new Date(date).toLocaleDateString('ru-RU');
+    //const timeStr = new Date(date).toLocaleTimeString('ru-RU');//<br></br> {timeStr}</></>
+    return (<>{dateStr} </>)
   }
+  return ''
+}
 
-export { UiTaskCard, ShowDate};
+export { UiTaskCard, ShowDate };

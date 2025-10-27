@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import type { FC } from 'react'
 import { UiTaskCard } from '../UiTaskCard/UiTaskCard';
-import { type ITask } from '../../types/TypesToDoList';
+import { type IServerTask, type ITask } from '../../types/TypesToDoList';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { setDarkTheme, setEdit, setLightTheme, setTasks } from '../../store/slices/tasksSlice';
 import SearchInput from '../SearchInput/SearchInput';
 import { DetectiveIcon, PlusIcon } from '../../assets/icons/icons';
 import Button from '@mui/material/Button';
 import './ToDoList.scss';
-import { baseUrl } from '../../utils';
+import { BASE_URL } from '../../const';
+import { fromServerTaskToTask } from '../../utils';
 
 
 
@@ -33,18 +34,22 @@ const ToDoList: FC = () => {
     if (storedIsLightAppTeme) dispatch(setLightTheme()); else dispatch(setDarkTheme());
 
 
-    fetch(baseUrl + '/tasks',{
+    fetch(BASE_URL + '/tasks', {
 
     }).then(response => {
-      console.log(response)
-      console.dir(response)
+
       console.table(response)
 
       if (response.ok) return response.json();
     }).then(response => {
-      const respTasks = response as unknown as Record<string, ITask>
-      console.log(respTasks);
-      dispatch(setTasks(respTasks));
+      const respTasks = response as unknown as IServerTask[];
+
+      let storedTasks: Record<string, ITask> = {};
+
+      respTasks.map((sTask) => {
+        storedTasks[sTask.id] = fromServerTaskToTask(sTask);
+      });
+      dispatch(setTasks(storedTasks));
     });
 
 

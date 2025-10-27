@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import React from 'react';
 import { Outlet, Route } from 'react-router';
+import { BASE_URL } from '../../const';
+import { fromTaskToServerTask } from '../../utils';
 
 //Overlay Manager npx @chakra-ui/cli snippet add toaster
 
@@ -44,6 +46,16 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
 
   }, [title, description]);
 
+  function postTask(newTask: ITask) {
+    fetch(BASE_URL + '/tasks', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(fromTaskToServerTask(newTask))
+    }).then(res => {
+      if (!res.ok) throw new Error("Err in postTask");
+      return res.json();
+    }).then(data => console.log(data))
+  }
+
   function onClickAdd() {
     const newTask: ITask = {
       id: uuidv4(),
@@ -53,12 +65,31 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
       dateOfCreation: Date.now(),
     };
     dispatch(addTask(newTask));
+
+    postTask(newTask);
+
     setTitle('');
     setDescription('');
     dispatch(removeEdit());
   }
+
+  function putTask() {
+    const updates = {
+      title: title ?? "",
+      description: description ?? "",
+    };
+
+    fetch(BASE_URL + '/tasks/'+ taskId, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates)
+    }).then(res => {
+      if (!res.ok) throw new Error("Err in postTask");
+      return res.json();
+    }).then(data => console.log(data))
+  }
+
   function onClickChange() {
-    if (isChangeMode() && taskId)
+    if (isChangeMode() && taskId) {
       dispatch(changeTask({
         id: taskId,
         updates: {
@@ -66,11 +97,13 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
           description: description
         }
       }));
+      putTask();
+    }
     dispatch(removeEdit());
   }
 
   return (
-<>
+    <>
       <div className={"Backdrop"} onClick={() => dispatch(removeEdit())}>
         <div className={"UiTaskCardActive"} onClick={(e) => { e.stopPropagation(); }}>
           <p className='Heading'>{isChangeMode() ? "ИЗМЕНИТЬ ЗАПИСЬ" : "новая запись"}</p>
@@ -94,8 +127,8 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
           </div>
         </div>
       </div>
-      <Outlet/>
-      </>
+      <Outlet />
+    </>
 
   );
 };

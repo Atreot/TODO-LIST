@@ -1,18 +1,23 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { ITask } from '../../types/TypesToDoList';
+import type { INotification, ITask } from '../../types/TypesToDoList';
 type TTheme = 'light'|'dark'
+
 export interface IInitialState {
     tasks: Record<string, ITask> | null;
     isEdit: string | null,
     isLightAppTeme:boolean,
     theme:TTheme,
+    notification:INotification | null,
 }
+
 const initialState: IInitialState = {
     tasks: null,
     isEdit: null,
     isLightAppTeme:true,
-    theme:'light'
+    theme:'light',
+    notification: null,
 };
+
 
 const tasksSlice = createSlice({
     name: 'tasks',
@@ -20,7 +25,6 @@ const tasksSlice = createSlice({
     reducers: {
         setTasks: (state, action: PayloadAction<Record<string, ITask>>) => {
             const { payload } = action;
-            // переработать чтобы ключ в tasks стал id задачи
             state.tasks = payload;
         },
         setTheme: (state, action: PayloadAction<TTheme>) => {
@@ -70,10 +74,13 @@ const tasksSlice = createSlice({
             state.isLightAppTeme = false;
             document.documentElement.setAttribute('data-theme', "dark" );
         },
+        setNotification: (state, action: PayloadAction<INotification | null>) => {
+            state.notification = action.payload;
+        },
     },
 });
 
 export const { setTasks, addTask, deleteTaskById, updateTaskStatus, changeTask, setEdit, removeEdit,
-setLightTheme, setDarkTheme, setTheme
+setLightTheme, setDarkTheme, setTheme,setNotification
  } = tasksSlice.actions;
 export default tasksSlice.reducer;
