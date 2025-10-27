@@ -13,12 +13,14 @@ const initialState: IInitialState = {
     isLightAppTeme:true,
     theme:'light'
 };
+
 const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
         setTasks: (state, action: PayloadAction<Record<string, ITask>>) => {
             const { payload } = action;
+            // переработать чтобы ключ в tasks стал id задачи
             state.tasks = payload;
         },
         setTheme: (state, action: PayloadAction<TTheme>) => {

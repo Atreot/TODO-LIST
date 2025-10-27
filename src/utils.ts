@@ -9,3 +9,11 @@ export function createDefaulTask(): ITask {
     isCompleted: false,
   };
 }
+
+export const pages : { [key: string]: string }[] =
+ [{'tasks': 'задачи'},  {'contacts': 'контакты'}];
+
+
+export const baseUrl = "http://localhost:3000";
+ 
+ 

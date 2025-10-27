@@ -5,8 +5,12 @@ import { type ITask } from '../../types/TypesToDoList';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { setDarkTheme, setEdit, setLightTheme, setTasks } from '../../store/slices/tasksSlice';
 import SearchInput from '../SearchInput/SearchInput';
-import './ToDoList.css';
 import { DetectiveIcon, PlusIcon } from '../../assets/icons/icons';
+import Button from '@mui/material/Button';
+import './ToDoList.scss';
+import { baseUrl } from '../../utils';
+
+
 
 const ToDoList: FC = () => {
   let tasks = useAppSelector((state) => state.tasksSlice.tasks);
@@ -17,17 +21,33 @@ const ToDoList: FC = () => {
   const [selectValue, setSelectValue] = useState("all");
 
   useEffect(() => {
-    const storedTasksStr = localStorage.getItem('tasks');
-    const storedTasks: Record<string, ITask> = storedTasksStr ? JSON.parse(storedTasksStr) : {};
+    // const storedTasksStr = localStorage.getItem('tasks');
+    // const storedTasks: Record<string, ITask> = storedTasksStr ? JSON.parse(storedTasksStr) : {};
 
-    dispatch(setTasks(storedTasks));
+    //dispatch(setTasks(storedTasks));
     //tasks = useAppSelector((state) => state.tasksSlice.tasks);
-    setFilteredTasks(tasks && Object.values(tasks));
+    //setFilteredTasks(tasks && Object.values(tasks));
 
     const isLightAppTemeStr = localStorage.getItem('isLightAppTeme');
-    console.log(isLightAppTemeStr);
     const storedIsLightAppTeme: boolean = isLightAppTemeStr === null ? true : JSON.parse(isLightAppTemeStr);
     if (storedIsLightAppTeme) dispatch(setLightTheme()); else dispatch(setDarkTheme());
+
+
+    fetch(baseUrl + '/tasks',{
+
+    }).then(response => {
+      console.log(response)
+      console.dir(response)
+      console.table(response)
+
+      if (response.ok) return response.json();
+    }).then(response => {
+      const respTasks = response as unknown as Record<string, ITask>
+      console.log(respTasks);
+      dispatch(setTasks(respTasks));
+    });
+
+
   }, []);
 
   useEffect(() => {
@@ -46,12 +66,9 @@ const ToDoList: FC = () => {
 
   function onChangeSelect(value: string) {
     setSelectValue(value);
-    
   }
 
   function updateFilteredTasks() {
-
-
     if (tasks) {
       let newTask: ITask[];
       if (searchValue === "") {
@@ -81,7 +98,6 @@ const ToDoList: FC = () => {
     }
   }
 
-
   const DisplayTasks: FC = () => {
 
     if (filteredTasks && filteredTasks.length !== 0) {
@@ -105,6 +121,8 @@ const ToDoList: FC = () => {
 
   }
 
+
+
   return (
     <>
       <div className='container1'>
@@ -114,7 +132,9 @@ const ToDoList: FC = () => {
         </div>
       </div>
       <div className="parentCenterList" id='listContainer'>
-        <button className="ButtonAddTask" onClick={() => { dispatch(setEdit(" ")); }}><PlusIcon /></button>
+
+        <Button variant="contained" className="ButtonAddTask" onClick={() => { dispatch(setEdit(" ")); }}><PlusIcon /></Button>
+
         <div className="childCenter" id='listContainerChild'>
           <DisplayTasks />
         </div>

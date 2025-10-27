@@ -1,13 +1,12 @@
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { UiTaskCardBilder } from "../UiTaskCardBilder/UiTaskCardBilder";
 import { ShowDate } from "../UiTaskCard/UiTaskCard";
 import { BinIcon, PencilIcon } from "../../assets/icons/icons";
 import { deleteTaskById, setEdit, updateTaskStatus } from "../../store/slices/tasksSlice";
-import "../../Components/UiTaskCard/UiTaskCard.css"
-import "./UiTaskCardDetail.css"
-
+import "../../Components/UiTaskCard/UiTaskCard.scss"
+import "./UiTaskCardDetail.scss"
+import Button from "@mui/material/Button";
 
 interface IUiTaskCardDetailProps {
 
@@ -19,12 +18,11 @@ const UiTaskCardDetail: FC<IUiTaskCardDetailProps> = () => {
 
     const { id } = useParams();
     const tasks = useAppSelector(state => state.tasksSlice.tasks)
-    const [displayTaskBilder, setDisplayTaskBilder] = useState(false);
 
     const task = (tasks && id) ? tasks[id] : null
 
     function OnClickDelete() {
-        navigate(`/`);
+        navigate(`/tasks`);
         task && dispatch(deleteTaskById(task.id));
     }
 
@@ -45,12 +43,11 @@ const UiTaskCardDetail: FC<IUiTaskCardDetailProps> = () => {
 
     return (
         <>
-
             {
                 (!id || !tasks || !task) ?
                     <div>
                         <nav>
-                            <Link to="/"><button>Главная страница</button></Link>
+                            <Link to="/tasks"><Button>Главная страница</Button></Link>
                         </nav>
                         <h1>Задача не найдена! {id} </h1>
                         <p>{JSON.stringify(tasks, null, 2)}</p>
@@ -63,7 +60,7 @@ const UiTaskCardDetail: FC<IUiTaskCardDetailProps> = () => {
 
                             <div className={`UiTaskCard  parentCenter Tools`}>
                                 <nav className="MarginLeft">
-                                    <Link to="/"><button>Главная</button></Link>
+                                    <Link to="/tasks"><Button>назад</Button></Link>
                                 </nav>
                                 <p className={`TaskCardTitle  ${task.isCompleted ? 'InActive' : 'Active'}`} > { }</p>
 
@@ -79,8 +76,8 @@ const UiTaskCardDetail: FC<IUiTaskCardDetailProps> = () => {
                             <p className="Description MarginLeft MarginRight">{task.description}</p>
 
                             <div className="Footer">
-                                <button onClick={OnClickDeComplet} className='CancellationButton'>отменить выполнение</button>
-                                <button onClick={OnClickCompleted}>ВЫПОЛНИТЬ</button>
+                                <Button onClick={OnClickDeComplet} className='CancellationButton'>отменить выполнение</Button>
+                                <Button onClick={OnClickCompleted}>ВЫПОЛНИТЬ</Button>
                             </div>
                         </div>
                         <div className="Footer DateContainer">
@@ -89,13 +86,8 @@ const UiTaskCardDetail: FC<IUiTaskCardDetailProps> = () => {
                             <div className="dateOfCompletion Date" >
                                 {(task.dateOfCompletion) ? "выполнена:" : ""}  <ShowDate date={task.dateOfCompletion} /></div>
                         </div>
-
-
-
                     </div>
-
             }
-
         </>
     );
 }

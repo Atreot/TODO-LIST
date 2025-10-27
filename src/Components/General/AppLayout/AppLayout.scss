@@ -1,0 +1,11 @@
+.AppView {
+    width: 750px;
+    height: 710px;
+    margin: 0 auto;
+    padding: 0rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-color-black);
+    background-color: var(--bg-color);
+}

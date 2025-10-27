@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import './SearchInput.css';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
-import { setDarkTheme, setLightTheme, setTheme } from '../../store/slices/tasksSlice';
+import { setDarkTheme, setLightTheme } from '../../store/slices/tasksSlice';
+import Button from '@mui/material/Button';
+import './SearchInput.scss';
+import TextField from '@mui/material/TextField';
 
 interface SearchInputProps {
   placeholder?: string;
@@ -21,26 +23,26 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const [value, setValue] = useState<string>("");
 
   return (
-    <div className="search-container">
-      
+    <div className="search-container"> 
       <div className="search-wrapper">
-        <input
+        <TextField
+        fullWidth
           type="text"
+          variant="filled"
           placeholder={placeholder}
           value={value}
           onChange={(e) => { setValue(e.target.value); onChangeInput(e.target.value); }}
           className="search-input"
         />
-        <button
-          type="button"
-          className="search-button"
-        >
+        <span
+        onClick={() => {  onChangeInput(value); }}
+          className="search-button">
           <SearchIcon />
-        </button>
+        </span>
       </div>
-      <button onClick={() => { onClickAll && onClickAll(); setValue(""); }}>ВСЕ</button>
-      {isLightAppTeme ? <button onClick={() => { dispatch(setDarkTheme()); localStorage.setItem('isLightAppTeme', JSON.stringify(false)); }} className='ThemeButton' ><DarkThemeIcon /></button> :
-        <button onClick={() => { dispatch(setLightTheme()); localStorage.setItem('isLightAppTeme', JSON.stringify(true)); }} className='ThemeButton' ><LightThemeIcon /></button>}
+      <Button variant="text" onClick={() => { onClickAll && onClickAll(); setValue(""); }}>ВСЕ</Button>
+      {isLightAppTeme ? <Button variant="text" onClick={() => { dispatch(setDarkTheme()); localStorage.setItem('isLightAppTeme', JSON.stringify(false)); }} className='ThemeButton' ><DarkThemeIcon /></Button> :
+        <Button variant="text" onClick={() => { dispatch(setLightTheme()); localStorage.setItem('isLightAppTeme', JSON.stringify(true)); }} className='ThemeButton' ><LightThemeIcon /></Button>}
  
     </div>
   );

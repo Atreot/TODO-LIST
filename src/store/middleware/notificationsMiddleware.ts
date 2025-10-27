@@ -5,13 +5,14 @@ import { toaster } from "../../components/ui/toaster";
 import { useAppDispatch } from "../hook";
 import { setTasks } from "../slices/tasksSlice";
 
+
 function isActionWithType(action: unknown): action is { type: string } {
     return typeof action === 'object' && action !== null && 'type' in action;
 }
 
-export const notificationsMiddleware: Middleware = ({ getState , dispatch }) => (next) =>
+export const notificationsMiddleware: Middleware = ({ getState, dispatch }) => (next) =>
     (action) => {
-
+        
         if (!isActionWithType(action)) {
             return next(action);
         }
@@ -51,7 +52,7 @@ export const notificationsMiddleware: Middleware = ({ getState , dispatch }) => 
                 const taskTitle = previousState.tasksSlice.tasks[taskId].title;
 
 
-                const savedTasks ={...previousState.tasksSlice.tasks};
+                const savedTasks = { ...previousState.tasksSlice.tasks };
 
                 function onClickUndo() {
                     dispatch(setTasks(savedTasks));

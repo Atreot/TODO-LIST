@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import type { FC } from 'react'
-import "./UiTaskCardBilder.css"
+import "./UiTaskCardBilder.scss"
 import type { ITask } from '../../types/TypesToDoList';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { addTask, changeTask, removeEdit } from '../../store/slices/tasksSlice';
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Dialog, Portal } from "@chakra-ui/react"
-import { createOverlay } from "@chakra-ui/react"
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import React from 'react';
+import { Outlet, Route } from 'react-router';
 
 //Overlay Manager npx @chakra-ui/cli snippet add toaster
 
@@ -22,14 +24,14 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
   let task: ITask;
 
   function isChangeMode() {
-    return taskId !== null && taskId !==" ";
+    return taskId !== null && taskId !== " ";
   }
 
   const dispatch = useAppDispatch();
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  
+
   useEffect(() => {
     if (tasks && taskId !== null && tasks[taskId]) {
       task = tasks[taskId];
@@ -39,7 +41,7 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
   }, []);
 
   useEffect(() => {
-    
+
   }, [title, description]);
 
   function onClickAdd() {
@@ -56,40 +58,45 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
     dispatch(removeEdit());
   }
   function onClickChange() {
-    if(isChangeMode() && taskId)  
-    dispatch(changeTask({
-      id: taskId,
-      updates: {
-        title: title,
-        description: description
-      }
-    }));
+    if (isChangeMode() && taskId)
+      dispatch(changeTask({
+        id: taskId,
+        updates: {
+          title: title,
+          description: description
+        }
+      }));
     dispatch(removeEdit());
   }
 
   return (
-    <div className={"Backdrop"} onClick={() => dispatch(removeEdit())}>
-      <div className={"UiTaskCardActive"} onClick={(e) => { e.stopPropagation(); }}>
-        <p className='Heading'>{isChangeMode() ? "ИЗМЕНИТЬ ЗАПИСЬ" : "новая запись"}</p>
-        <input
-          type="text"
-          placeholder={"input your note..."}
-          value={title}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setTitle(e.target.value) }}
-          className="search-input"
-        />
-        <textarea
-          placeholder={"input your note..."}
-          value={description}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => { setDescription(e.target.value); }}
-          className="StretchTextArea"
-        />
-        <div className="Footer">
-          {<button onClick={() => dispatch(removeEdit())} className='CancellationButton FutterButtonWidth'>ОТМЕНА</button>}
-          {isChangeMode() ? <button className='FutterButtonWidth' onClick={onClickChange}>ИЗМЕНИТЬ</button> : <button className='FutterButtonWidth' onClick={onClickAdd}>СОЗДАТЬ</button>}
+<>
+      <div className={"Backdrop"} onClick={() => dispatch(removeEdit())}>
+        <div className={"UiTaskCardActive"} onClick={(e) => { e.stopPropagation(); }}>
+          <p className='Heading'>{isChangeMode() ? "ИЗМЕНИТЬ ЗАПИСЬ" : "новая запись"}</p>
+          <TextField
+            type="text"
+            variant="filled"
+            placeholder={"input your note..."}
+            value={title}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setTitle(e.target.value) }}
+            className="search-input"
+          />
+          <textarea
+            placeholder={"input your note..."}
+            value={description}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => { setDescription(e.target.value); }}
+            className="StretchTextArea"
+          />
+          <div className="Footer">
+            {<Button onClick={() => dispatch(removeEdit())} className='CancellationButton FutterButtonWidth'>ОТМЕНА</Button>}
+            {isChangeMode() ? <Button className='FutterButtonWidth' onClick={onClickChange}>ИЗМЕНИТЬ</Button> : <Button className='FutterButtonWidth' onClick={onClickAdd}>СОЗДАТЬ</Button>}
+          </div>
         </div>
       </div>
-    </div>
+      <Outlet/>
+      </>
+
   );
 };
 

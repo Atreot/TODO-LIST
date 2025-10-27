@@ -1,5 +1,5 @@
 import { type FC } from 'react'
-import "./UiTaskCard.css"
+import "./UiTaskCard.scss"
 import type { ITask } from '../../types/TypesToDoList';
 import { useNavigate } from 'react-router';
 import { useAppDispatch } from '../../store/hook';
@@ -32,7 +32,7 @@ const UiTaskCard: FC<IUiTaskCardProps> = ({ task }) => {
   }
 
   function openViewTaskCard() {
-     navigate(`/${task.id}`);
+     navigate(`/tasks/${task.id}`);
   }
 
   return (
