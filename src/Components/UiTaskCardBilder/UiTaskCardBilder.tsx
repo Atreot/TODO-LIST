@@ -8,12 +8,8 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import React from 'react';
-import { Outlet, Route } from 'react-router';
 import { BASE_URL } from '../../const';
 import { fromTaskToServerTask } from '../../utils';
-
-//Overlay Manager npx @chakra-ui/cli snippet add toaster
-
 
 interface IUiTaskCardBilderProps {
 
@@ -33,12 +29,14 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [isCorrectEntry, setIsCorrectEntry] = useState(false);
 
   useEffect(() => {
     if (tasks && taskId !== null && tasks[taskId]) {
       task = tasks[taskId];
       setTitle(task.title);
       setDescription(task.description);
+      setIsCorrectEntry(task.title.length>=3);
     }
   }, []);
 
@@ -79,13 +77,18 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
       description: description ?? "",
     };
 
-    fetch(BASE_URL + '/tasks/'+ taskId, {
+    fetch(BASE_URL + '/tasks/' + taskId, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates)
     }).then(res => {
       if (!res.ok) throw new Error("Err in postTask");
       return res.json();
     }).then(data => console.log(data))
+  }
+
+  function onChangeTitleTextField(str: string) {
+    setTitle(str);
+    setIsCorrectEntry(str.length>=3);
   }
 
   function onClickChange() {
@@ -104,7 +107,7 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
 
   return (
     <>
-      <div className={"Backdrop"} onClick={() => dispatch(removeEdit())}>
+      {<div className={"Backdrop"} onClick={() => dispatch(removeEdit())}>
         <div className={"UiTaskCardActive"} onClick={(e) => { e.stopPropagation(); }}>
           <p className='Heading'>{isChangeMode() ? "ИЗМЕНИТЬ ЗАПИСЬ" : "новая запись"}</p>
           <TextField
@@ -112,8 +115,8 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
             variant="filled"
             placeholder={"input your note..."}
             value={title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setTitle(e.target.value) }}
-            className="search-input"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { onChangeTitleTextField(e.target.value); }}
+            className={isCorrectEntry ? "search-input" : "search-input NotValidInput"}
           />
           <textarea
             placeholder={"input your note..."}
@@ -123,11 +126,12 @@ const TaskCardBilder: FC<IUiTaskCardBilderProps> = () => {
           />
           <div className="Footer">
             {<Button onClick={() => dispatch(removeEdit())} className='CancellationButton FutterButtonWidth'>ОТМЕНА</Button>}
-            {isChangeMode() ? <Button className='FutterButtonWidth' onClick={onClickChange}>ИЗМЕНИТЬ</Button> : <Button className='FutterButtonWidth' onClick={onClickAdd}>СОЗДАТЬ</Button>}
+            {isChangeMode() ? <Button className={isCorrectEntry ? 'FutterButtonWidth' : 'FutterButtonWidth NotActiveButton'} onClick={onClickChange}>ИЗМЕНИТЬ</Button> :
+              <Button className={isCorrectEntry ? 'FutterButtonWidth' : 'FutterButtonWidth NotActiveButton'} onClick={onClickAdd}>СОЗДАТЬ</Button>}
           </div>
         </div>
-      </div>
-      <Outlet />
+      </div>}
+
     </>
 
   );

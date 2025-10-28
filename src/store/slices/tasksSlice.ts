@@ -124,9 +124,9 @@ const tasksSlice = createSlice({
             };
         },
         removeNotific: (state, action: PayloadAction<INotific>) => {
-            const id = action.payload.id
-            if (!state.notific[id]) return
-            delete state.notific[id]
+            // const id = action.payload.id
+            // if (!state.notific[id]) return
+            // delete state.notific[id]
         },
     },
 });

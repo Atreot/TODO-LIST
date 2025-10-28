@@ -66,7 +66,7 @@ export default function NotificationsSnackbar() {
 
     return (
         <div className='notification-container'>
-            {
+            {/* {
                 notifications.map((oneNotific, index)=> {
                     const {id:notificId, variant, task} = oneNotific
                     const data = notificationMap[variant]
@@ -92,7 +92,7 @@ export default function NotificationsSnackbar() {
                         />
                     )
                 })
-            }
+            } */}
 
             {/* {notification?.action ?
                 <Snackbar

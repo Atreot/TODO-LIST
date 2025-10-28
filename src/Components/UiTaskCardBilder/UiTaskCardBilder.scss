@@ -76,6 +76,14 @@
   border: 1px solid #6C63FF;
 }
 
-.FutterButtonWidth{
+.FutterButtonWidth {
   width: 125px;
+}
+
+.NotActiveButton {
+  interactivity: inert;
+}
+
+.NotValidInput .MuiFilledInput-input{
+  border-color: red;
 }

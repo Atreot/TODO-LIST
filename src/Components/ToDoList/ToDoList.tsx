@@ -139,10 +139,7 @@ const ToDoList: FC = () => {
       <div className="parentCenterList" id='listContainer'>
 
         <Button variant="contained" className="ButtonAddTask" onClick={() => { 
-          dispatch(addNotific({
-            variant:'compete',
-          })); 
-          // dispatch(setEdit(" ")); 
+          dispatch(setEdit(" ")); 
         }}><PlusIcon /></Button>
 
         <div className="childCenter" id='listContainerChild'>

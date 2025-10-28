@@ -2,6 +2,7 @@ import { type PayloadAction } from "@reduxjs/toolkit";
 import type { Middleware } from 'redux';
 import type { RootState } from "../store";
 import { setNotification, setTasks } from "../slices/tasksSlice";
+import { notificationService } from "../../Components/notificationsSnackbar/notificationService/NotificationService";
 
 
 function isActionWithType(action: unknown): action is { type: string } {
@@ -10,7 +11,7 @@ function isActionWithType(action: unknown): action is { type: string } {
 
 export const notificationsMiddleware: Middleware = ({ getState, dispatch }) => (next) =>
     (action) => {
-        
+
         if (!isActionWithType(action)) {
             return next(action);
         }
@@ -35,10 +36,9 @@ export const notificationsMiddleware: Middleware = ({ getState, dispatch }) => (
                     const currentState: RootState = getState();
                     if (currentState.tasksSlice.tasks === null || !(currentState.tasksSlice.tasks[payload.id])) return;
 
-                    dispatch(setNotification({message: currentState.tasksSlice.tasks[payload.id].isCompleted ? `${taskTitle} ВЫПОЛНЕНА`.toLocaleUpperCase() :
-                            `ВЫПОЛНЕНИЕ ${taskTitle} ОТМЕНЕНО`.toLocaleUpperCase(),
-                        autoHideDuration: 2000,}));
 
+                    notificationService.info(currentState.tasksSlice.tasks[payload.id].isCompleted ? `${taskTitle} ВЫПОЛНЕНА` :
+                        `ВЫПОЛНЕНИЕ ${taskTitle} ОТМЕНЕНО`);
                 }
                 break;
             case 'deleteTaskById': {
@@ -53,15 +53,19 @@ export const notificationsMiddleware: Middleware = ({ getState, dispatch }) => (
 
                 function onClickUndo() {
                     dispatch(setTasks(savedTasks));
-                    
-                    dispatch(setNotification({message: "Удаление отменено".toLocaleUpperCase(),
-                        autoHideDuration: 2000,}));
+
+                    notificationService.info("Удаление отменено");
+
+                    // dispatch(setNotification({message: "Удаление отменено".toLocaleUpperCase(),
+                    //     autoHideDuration: 2000,}));
                 }
 
                 result = next(action);
 
-                dispatch(setNotification({message: `удалена ${taskTitle}`.toLocaleUpperCase(),
-                        autoHideDuration: 5000, action: onClickUndo}));
+                notificationService.show({ type: "warning", message: `удалена ${taskTitle}`, action: onClickUndo });
+
+                // dispatch(setNotification({message: `удалена ${taskTitle}`.toLocaleUpperCase(),
+                //         autoHideDuration: 5000, action: onClickUndo}));
             }
                 break;
             default:
