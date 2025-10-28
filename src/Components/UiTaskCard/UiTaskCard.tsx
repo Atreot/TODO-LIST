@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router';
 import { useAppDispatch } from '../../store/hook';
 import { deleteTaskById, setEdit, updateTaskStatus } from '../../store/slices/tasksSlice';
 import { BinIcon, PencilIcon } from '../../assets/icons/icons';
-import { BASE_URL } from '../../const';
 import { deleteTask, putTaskStatus } from '../../utils';
 
 interface IUiTaskCardProps {

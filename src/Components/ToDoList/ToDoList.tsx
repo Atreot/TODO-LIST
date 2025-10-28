@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { UiTaskCard } from '../UiTaskCard/UiTaskCard';
 import { type IServerTask, type ITask } from '../../types/TypesToDoList';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
-import { setDarkTheme, setEdit, setLightTheme, setTasks } from '../../store/slices/tasksSlice';
+import { addNotific, setDarkTheme, setEdit, setLightTheme, setTasks } from '../../store/slices/tasksSlice';
 import SearchInput from '../SearchInput/SearchInput';
 import { DetectiveIcon, PlusIcon } from '../../assets/icons/icons';
 import Button from '@mui/material/Button';
@@ -138,7 +138,12 @@ const ToDoList: FC = () => {
       </div>
       <div className="parentCenterList" id='listContainer'>
 
-        <Button variant="contained" className="ButtonAddTask" onClick={() => { dispatch(setEdit(" ")); }}><PlusIcon /></Button>
+        <Button variant="contained" className="ButtonAddTask" onClick={() => { 
+          dispatch(addNotific({
+            variant:'compete',
+          })); 
+          // dispatch(setEdit(" ")); 
+        }}><PlusIcon /></Button>
 
         <div className="childCenter" id='listContainerChild'>
           <DisplayTasks />
