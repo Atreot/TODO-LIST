@@ -101,153 +101,153 @@ let tasks = [
   }
 ];
 
-// // GET /users - получить всех пользователей
-// app.get('/users', (req, res) => {
-//   res.json(users);
-// });
+// GET /users - получить всех пользователей
+app.get('/users', (req, res) => {
+  res.json(users);
+});
 
-// // GET /users/:id - получить пользователя по ID
-// app.get('/users/:id', (req, res) => {
-//   const user = users.find(u => u.id === parseInt(req.params.id));
-//   if (!user) return res.status(404).json({ error: 'User not found' });
-//   res.json(user);
-// });
+// GET /users/:id - получить пользователя по ID
+app.get('/users/:id', (req, res) => {
+  const user = users.find(u => u.id === parseInt(req.params.id));
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json(user);
+});
 
-// // POST /users - создать нового пользователя
-// app.post('/users', (req, res) => {
-//   const newUser = {
-//     id: users.length + 1,
-//     name: req.body.name,
-//     email: req.body.email
-//   };
-//   users.push(newUser);
-//   res.status(201).json(newUser);
-// });
+// POST /users - создать нового пользователя
+app.post('/users', (req, res) => {
+  const newUser = {
+    id: users.length + 1,
+    name: req.body.name,
+    email: req.body.email
+  };
+  users.push(newUser);
+  res.status(201).json(newUser);
+});
 
-// // GET /tasks - получить все задачи
-// app.get('/tasks', (req, res) => {
-//   res.json(tasks);
-// });
+// GET /tasks - получить все задачи
+app.get('/tasks', (req, res) => {
+  res.json(tasks);
+});
 
-// // GET /tasks/:id - получить задачу по ID
-// app.get('/tasks/:id', (req, res) => {
-//   const task = tasks.find(t => t.id === parseInt(req.params.id));
-//   if (!task) return res.status(404).json({ error: 'Task not found' });
-//   res.json(task);
-// });
+// GET /tasks/:id - получить задачу по ID
+app.get('/tasks/:id', (req, res) => {
+  const task = tasks.find(t => t.id === parseInt(req.params.id));
+  if (!task) return res.status(404).json({ error: 'Task not found' });
+  res.json(task);
+});
 
-// // POST /tasks - создать новую задачу
-// app.post('/tasks', (req, res) => {
-//   const timestamp = Date.now();
-//   const newTask = {
-//     id: tasks.length + 1,
-//     title: req.body.title,
-//     description: req.body.description,
-//     complete: req.body.complete || false,
-//     createdAt: timestamp,
-//     updatedAt: timestamp,
-//     userId: req.body.userId
-//   };
-//   tasks.push(newTask);
-//   res.status(201).json(newTask);
-// });
+// POST /tasks - создать новую задачу
+app.post('/tasks', (req, res) => {
+  const timestamp = Date.now();
+  const newTask = {
+    id: tasks.length + 1,
+    title: req.body.title,
+    description: req.body.description,
+    complete: req.body.complete || false,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    userId: req.body.userId
+  };
+  tasks.push(newTask);
+  res.status(201).json(newTask);
+});
 
-// // PUT /tasks/:id - обновить задачу
-// app.put('/tasks/:id', (req, res) => {
-//   const taskIndex = tasks.findIndex(t => t.id === parseInt(req.params.id));
-//   if (taskIndex === -1) return res.status(404).json({ error: 'Task not found' });
+// PUT /tasks/:id - обновить задачу
+app.put('/tasks/:id', (req, res) => {
+  const taskIndex = tasks.findIndex(t => t.id === parseInt(req.params.id));
+  if (taskIndex === -1) return res.status(404).json({ error: 'Task not found' });
 
-//   const updatedTask = {
-//     ...tasks[taskIndex],
-//     ...req.body,
-//     id: tasks[taskIndex].id, // Не позволяем менять ID
-//     createdAt: tasks[taskIndex].createdAt, // Не позволяем менять дату создания
-//     updatedAt: Date.now() // Всегда обновляем updatedAt
-//   };
+  const updatedTask = {
+    ...tasks[taskIndex],
+    ...req.body,
+    id: tasks[taskIndex].id, // Не позволяем менять ID
+    createdAt: tasks[taskIndex].createdAt, // Не позволяем менять дату создания
+    updatedAt: Date.now() // Всегда обновляем updatedAt
+  };
 
-//   tasks[taskIndex] = updatedTask;
-//   res.json(updatedTask);
-// });
+  tasks[taskIndex] = updatedTask;
+  res.json(updatedTask);
+});
 
-// // DELETE /tasks/:id - удалить задачу
-// app.delete('/tasks/:id', (req, res) => {
-//   const taskIndex = tasks.findIndex(t => t.id === parseInt(req.params.id));
-//   if (taskIndex === -1) return res.status(404).json({ error: 'Task not found' });
+// DELETE /tasks/:id - удалить задачу
+app.delete('/tasks/:id', (req, res) => {
+  const taskIndex = tasks.findIndex(t => t.id === parseInt(req.params.id));
+  if (taskIndex === -1) return res.status(404).json({ error: 'Task not found' });
 
-//   const deletedTask = tasks.splice(taskIndex, 1)[0];
-//   res.json({ message: 'Task deleted', task: deletedTask });
-// });
+  const deletedTask = tasks.splice(taskIndex, 1)[0];
+  res.json({ message: 'Task deleted', task: deletedTask });
+});
 
-// // GET /tasks/user/:userId - получить задачи конкретного пользователя
-// app.get('/tasks/user/:userId', (req, res) => {
-//   const userTasks = tasks.filter(t => t.userId === parseInt(req.params.userId));
-//   res.json(userTasks);
-// });
-// // Эндпоинт для получения типов TypeScript
-// app.get('/api/types', (req, res) => {
-//   const types = `
-// // Types for API responses
-// export interface ITask {
-//   id: number;
-//   title: string;
-//   description: string;
-//   complete: boolean;
-//   createdAt: number;
-//   updatedAt: number;
-//   userId: number;
-// }
+// GET /tasks/user/:userId - получить задачи конкретного пользователя
+app.get('/tasks/user/:userId', (req, res) => {
+  const userTasks = tasks.filter(t => t.userId === parseInt(req.params.userId));
+  res.json(userTasks);
+});
+// Эндпоинт для получения типов TypeScript
+app.get('/api/types', (req, res) => {
+  const types = `
+// Types for API responses
+export interface ITask {
+  id: number;
+  title: string;
+  description: string;
+  complete: boolean;
+  createdAt: number;
+  updatedAt: number;
+  userId: number;
+}
 
-// export interface IUser {
-//   id: number;
-//   name: string;
-//   email: string;
-// }
+export interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
 
-// export interface ApiResponse<T = any> {
-//   success: boolean;
-//   message?: string;
-//   data?: T;
-// }
+export interface ApiResponse<T = any> {
+  success: boolean;
+  message?: string;
+  data?: T;
+}
 
-// // API Response types
-// export type TasksResponse = ApiResponse<ITask[]>;
-// export type TaskResponse = ApiResponse<ITask>;
-// export type UsersResponse = ApiResponse<IUser[]>;
-// export type UserResponse = ApiResponse<IUser>;
-//   `;
+// API Response types
+export type TasksResponse = ApiResponse<ITask[]>;
+export type TaskResponse = ApiResponse<ITask>;
+export type UsersResponse = ApiResponse<IUser[]>;
+export type UserResponse = ApiResponse<IUser>;
+  `;
   
-//   res.set('Content-Type', 'text/typescript');
-//   res.send(types);
-// });
-// // Эндпоинт для получения типов в JSON Schema формате
-// app.get('/api/schemas', (req, res) => {
-//   const schemas = {
-//     Task: {
-//       type: 'object',
-//       properties: {
-//         id: { type: 'number' },
-//         title: { type: 'string' },
-//         description: { type: 'string' },
-//         complete: { type: 'boolean' },
-//         createdAt: { type: 'number' },
-//         updatedAt: { type: 'number' },
-//         userId: { type: 'number' }
-//       },
-//       required: ['id', 'title', 'description', 'userId']
-//     },
-//     User: {
-//       type: 'object',
-//       properties: {
-//         id: { type: 'number' },
-//         name: { type: 'string' },
-//         email: { type: 'string' }
-//       },
-//       required: ['id', 'name', 'email']
-//     }
-//   };
+  res.set('Content-Type', 'text/typescript');
+  res.send(types);
+});
+// Эндпоинт для получения типов в JSON Schema формате
+app.get('/api/schemas', (req, res) => {
+  const schemas = {
+    Task: {
+      type: 'object',
+      properties: {
+        id: { type: 'number' },
+        title: { type: 'string' },
+        description: { type: 'string' },
+        complete: { type: 'boolean' },
+        createdAt: { type: 'number' },
+        updatedAt: { type: 'number' },
+        userId: { type: 'number' }
+      },
+      required: ['id', 'title', 'description', 'userId']
+    },
+    User: {
+      type: 'object',
+      properties: {
+        id: { type: 'number' },
+        name: { type: 'string' },
+        email: { type: 'string' }
+      },
+      required: ['id', 'name', 'email']
+    }
+  };
   
-//   res.json(schemas);
-// });
+  res.json(schemas);
+});
 // Запуск сервера
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
