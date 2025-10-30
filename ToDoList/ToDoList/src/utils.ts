@@ -38,7 +38,19 @@ export const pages: { [key: string]: string }[] =
   [{ 'tasks': 'задачи' }, { 'contacts': 'контакты' }];
 
 
-export function putTaskStatus(newStatus: boolean, id:string) {
+
+
+// export function postTasks(tasks:Record<string, ITask> | null) {
+//   fetch(BASE_URL + '/tasks/' + id, {
+//     method: 'POST', headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(updates)
+//   }).then(res => {
+//     if (!res.ok) throw new Error("Err in putTaskStatus");
+//     return res.json();
+//   }).then(data => console.log(data))
+// }
+
+export function putTaskStatus(newStatus: boolean, id: string) {
   const updates = {
     complete: newStatus
   };
@@ -51,8 +63,8 @@ export function putTaskStatus(newStatus: boolean, id:string) {
   }).then(data => console.log(data))
 }
 
-export function deleteTask( id:string) {
-  
+export function deleteTask(id: string) {
+
   fetch(BASE_URL + '/tasks/' + id, {
     method: 'DELETE',
   }).then(res => {

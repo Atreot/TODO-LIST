@@ -6,7 +6,7 @@ import './NotificationSnackbar.scss'
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppSelector } from '../../store/hook';
 import { useDispatch } from 'react-redux';
-import { removeNotific, setNotification, type IDeleteNotific, type INotific, type TNotificationVariant } from '../../store/slices/tasksSlice';
+import {  type TNotificationVariant } from '../../store/slices/tasksSlice';
 import { useState } from 'react';
 import { notificationService, type NotificationEvent, type NotificationType } from './notificationService/NotificationService';
 import { type Notification } from '../notificationsSnackbar/notificationService/NotificationService';

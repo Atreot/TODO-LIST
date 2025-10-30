@@ -8,7 +8,6 @@ export interface NotificationEvent {
   title?: string;
   duration?: number; // 0 = не закрывать автоматически
   field?: string;
-  metadata?: Record<string, any>;
   action?: ()=>void;
 }
 
@@ -42,7 +41,6 @@ export class NotificationService {
     eventBus.emit('notification:show', event);
   }
 
-
   info(message: string, title: string = 'Информация', duration: number = 4000): void {
     this.show({
       type: 'info',
@@ -65,17 +63,7 @@ export class NotificationService {
     return eventBus.on('notification:clear-all', callback);
   }
 
-  validateField(
-    value: any, 
-    validator: (value: any) => string | null
-  ): boolean {
-    const error = validator(value);
-    if (error) {
-     
-      return false;
-    }
-    return true;
-  }
+ 
 
   
 }

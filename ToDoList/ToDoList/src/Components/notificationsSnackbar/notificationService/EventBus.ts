@@ -1,4 +1,3 @@
-// events/EventBus.ts
 type EventCallback<T = any> = (data: T) => void;
 
 class EventBus {
@@ -40,9 +39,7 @@ class EventBus {
       }, 0);
     }
   }
-
-
-
+  
   destroy(): void {
     this.events.clear();
   }
